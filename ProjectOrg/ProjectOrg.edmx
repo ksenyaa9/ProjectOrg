@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище ProjectOrganizationModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CONTRACT">
+          <Key>
+            <PropertyRef Name="Contract_ID" />
+          </Key>
+          <Property Name="Contract_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Organization_ID" Type="int" Nullable="false" />
+          <Property Name="Contract_Number" Type="int" Nullable="false" />
+          <Property Name="Contract_Date" Type="date" Nullable="false" />
+          <Property Name="Contract_Cost" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DEPARTAMENT">
+          <Key>
+            <PropertyRef Name="Departament_ID" />
+          </Key>
+          <Property Name="Departament_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Departament_Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Floor" Type="int" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="18" Nullable="false" />
+          <Property Name="Boss" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EMPLOYEE">
+          <Key>
+            <PropertyRef Name="Employee_ID" />
+          </Key>
+          <Property Name="Employee_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Departament_ID" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Patronymic" Type="varchar" MaxLength="50" />
+          <Property Name="Post" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Gender" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Street" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="House" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Birthday" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ORGANIZATION">
+          <Key>
+            <PropertyRef Name="Organization_ID" />
+          </Key>
+          <Property Name="Organization_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Organization_Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Country" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Street" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="House" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Firstname_Director" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Lastname_Director" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Patronymic_Director" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PROJECT">
+          <Key>
+            <PropertyRef Name="Project_ID" />
+          </Key>
+          <Property Name="Project_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Contract_ID" Type="int" Nullable="false" />
+          <Property Name="Departament_ID" Type="int" Nullable="false" />
+          <Property Name="ProjectName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Start_Date" Type="date" Nullable="false" />
+          <Property Name="End_Date" Type="date" />
+          <Property Name="ProjectCost" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ProjectPhoto" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__CONTRACT__Contra__45F365D3">
+          <End Role="ORGANIZATION" Type="Self.ORGANIZATION" Multiplicity="1" />
+          <End Role="CONTRACT" Type="Self.CONTRACT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORGANIZATION">
+              <PropertyRef Name="Organization_ID" />
+            </Principal>
+            <Dependent Role="CONTRACT">
+              <PropertyRef Name="Organization_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DEPARTAMENT_EMPLOYEE">
+          <End Role="EMPLOYEE" Type="Self.EMPLOYEE" Multiplicity="1" />
+          <End Role="DEPARTAMENT" Type="Self.DEPARTAMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMPLOYEE">
+              <PropertyRef Name="Employee_ID" />
+            </Principal>
+            <Dependent Role="DEPARTAMENT">
+              <PropertyRef Name="Boss" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EMPLOYEE_DEPARTAMENT">
+          <End Role="DEPARTAMENT" Type="Self.DEPARTAMENT" Multiplicity="1" />
+          <End Role="EMPLOYEE" Type="Self.EMPLOYEE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTAMENT">
+              <PropertyRef Name="Departament_ID" />
+            </Principal>
+            <Dependent Role="EMPLOYEE">
+              <PropertyRef Name="Departament_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROJECT_CONTRACT">
+          <End Role="CONTRACT" Type="Self.CONTRACT" Multiplicity="1" />
+          <End Role="PROJECT" Type="Self.PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONTRACT">
+              <PropertyRef Name="Contract_ID" />
+            </Principal>
+            <Dependent Role="PROJECT">
+              <PropertyRef Name="Contract_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROJECT_DEPARTAMENT">
+          <End Role="DEPARTAMENT" Type="Self.DEPARTAMENT" Multiplicity="1" />
+          <End Role="PROJECT" Type="Self.PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTAMENT">
+              <PropertyRef Name="Departament_ID" />
+            </Principal>
+            <Dependent Role="PROJECT">
+              <PropertyRef Name="Departament_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище ProjectOrganizationModelContainer">
+          <EntitySet Name="CONTRACT" EntityType="Self.CONTRACT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DEPARTAMENT" EntityType="Self.DEPARTAMENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EMPLOYEE" EntityType="Self.EMPLOYEE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORGANIZATION" EntityType="Self.ORGANIZATION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PROJECT" EntityType="Self.PROJECT" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__CONTRACT__Contra__45F365D3" Association="Self.FK__CONTRACT__Contra__45F365D3">
+            <End Role="ORGANIZATION" EntitySet="ORGANIZATION" />
+            <End Role="CONTRACT" EntitySet="CONTRACT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DEPARTAMENT_EMPLOYEE" Association="Self.FK_DEPARTAMENT_EMPLOYEE">
+            <End Role="EMPLOYEE" EntitySet="EMPLOYEE" />
+            <End Role="DEPARTAMENT" EntitySet="DEPARTAMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EMPLOYEE_DEPARTAMENT" Association="Self.FK_EMPLOYEE_DEPARTAMENT">
+            <End Role="DEPARTAMENT" EntitySet="DEPARTAMENT" />
+            <End Role="EMPLOYEE" EntitySet="EMPLOYEE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECT_CONTRACT" Association="Self.FK_PROJECT_CONTRACT">
+            <End Role="CONTRACT" EntitySet="CONTRACT" />
+            <End Role="PROJECT" EntitySet="PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECT_DEPARTAMENT" Association="Self.FK_PROJECT_DEPARTAMENT">
+            <End Role="DEPARTAMENT" EntitySet="DEPARTAMENT" />
+            <End Role="PROJECT" EntitySet="PROJECT" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProjectOrganizationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CONTRACT">
+          <Key>
+            <PropertyRef Name="Contract_ID" />
+          </Key>
+          <Property Name="Contract_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Organization_ID" Type="Int32" Nullable="false" />
+          <Property Name="Contract_Number" Type="Int32" Nullable="false" />
+          <Property Name="Contract_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Contract_Cost" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="ORGANIZATION" Relationship="Self.FK__CONTRACT__Contra__45F365D3" FromRole="CONTRACT" ToRole="ORGANIZATION" />
+          <NavigationProperty Name="PROJECT" Relationship="Self.FK_PROJECT_CONTRACT" FromRole="CONTRACT" ToRole="PROJECT" />
+        </EntityType>
+        <EntityType Name="DEPARTAMENT">
+          <Key>
+            <PropertyRef Name="Departament_ID" />
+          </Key>
+          <Property Name="Departament_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Departament_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Floor" Type="Int32" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="18" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Boss" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EMPLOYEE" Relationship="Self.FK_DEPARTAMENT_EMPLOYEE" FromRole="DEPARTAMENT" ToRole="EMPLOYEE" />
+          <NavigationProperty Name="EMPLOYEE1" Relationship="Self.FK_EMPLOYEE_DEPARTAMENT" FromRole="DEPARTAMENT" ToRole="EMPLOYEE" />
+          <NavigationProperty Name="PROJECT" Relationship="Self.FK_PROJECT_DEPARTAMENT" FromRole="DEPARTAMENT" ToRole="PROJECT" />
+        </EntityType>
+        <EntityType Name="EMPLOYEE">
+          <Key>
+            <PropertyRef Name="Employee_ID" />
+          </Key>
+          <Property Name="Employee_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Departament_ID" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Post" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="House" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="DEPARTAMENT" Relationship="Self.FK_DEPARTAMENT_EMPLOYEE" FromRole="EMPLOYEE" ToRole="DEPARTAMENT" />
+          <NavigationProperty Name="DEPARTAMENT1" Relationship="Self.FK_EMPLOYEE_DEPARTAMENT" FromRole="EMPLOYEE" ToRole="DEPARTAMENT" />
+        </EntityType>
+        <EntityType Name="ORGANIZATION">
+          <Key>
+            <PropertyRef Name="Organization_ID" />
+          </Key>
+          <Property Name="Organization_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Organization_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="House" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Firstname_Director" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Lastname_Director" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Patronymic_Director" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CONTRACT" Relationship="Self.FK__CONTRACT__Contra__45F365D3" FromRole="ORGANIZATION" ToRole="CONTRACT" />
+        </EntityType>
+        <EntityType Name="PROJECT">
+          <Key>
+            <PropertyRef Name="Project_ID" />
+          </Key>
+          <Property Name="Project_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Contract_ID" Type="Int32" Nullable="false" />
+          <Property Name="Departament_ID" Type="Int32" Nullable="false" />
+          <Property Name="ProjectName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Start_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="End_Date" Type="DateTime" Precision="0" />
+          <Property Name="ProjectCost" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ProjectPhoto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CONTRACT" Relationship="Self.FK_PROJECT_CONTRACT" FromRole="PROJECT" ToRole="CONTRACT" />
+          <NavigationProperty Name="DEPARTAMENT" Relationship="Self.FK_PROJECT_DEPARTAMENT" FromRole="PROJECT" ToRole="DEPARTAMENT" />
+        </EntityType>
+        <Association Name="FK__CONTRACT__Contra__45F365D3">
+          <End Role="ORGANIZATION" Type="Self.ORGANIZATION" Multiplicity="1" />
+          <End Role="CONTRACT" Type="Self.CONTRACT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORGANIZATION">
+              <PropertyRef Name="Organization_ID" />
+            </Principal>
+            <Dependent Role="CONTRACT">
+              <PropertyRef Name="Organization_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROJECT_CONTRACT">
+          <End Role="CONTRACT" Type="Self.CONTRACT" Multiplicity="1" />
+          <End Role="PROJECT" Type="Self.PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONTRACT">
+              <PropertyRef Name="Contract_ID" />
+            </Principal>
+            <Dependent Role="PROJECT">
+              <PropertyRef Name="Contract_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DEPARTAMENT_EMPLOYEE">
+          <End Role="EMPLOYEE" Type="Self.EMPLOYEE" Multiplicity="1" />
+          <End Role="DEPARTAMENT" Type="Self.DEPARTAMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMPLOYEE">
+              <PropertyRef Name="Employee_ID" />
+            </Principal>
+            <Dependent Role="DEPARTAMENT">
+              <PropertyRef Name="Boss" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EMPLOYEE_DEPARTAMENT">
+          <End Role="DEPARTAMENT" Type="Self.DEPARTAMENT" Multiplicity="1" />
+          <End Role="EMPLOYEE" Type="Self.EMPLOYEE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTAMENT">
+              <PropertyRef Name="Departament_ID" />
+            </Principal>
+            <Dependent Role="EMPLOYEE">
+              <PropertyRef Name="Departament_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROJECT_DEPARTAMENT">
+          <End Role="DEPARTAMENT" Type="Self.DEPARTAMENT" Multiplicity="1" />
+          <End Role="PROJECT" Type="Self.PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTAMENT">
+              <PropertyRef Name="Departament_ID" />
+            </Principal>
+            <Dependent Role="PROJECT">
+              <PropertyRef Name="Departament_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProjectOrganizationEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CONTRACT" EntityType="Self.CONTRACT" />
+          <EntitySet Name="DEPARTAMENT" EntityType="Self.DEPARTAMENT" />
+          <EntitySet Name="EMPLOYEE" EntityType="Self.EMPLOYEE" />
+          <EntitySet Name="ORGANIZATION" EntityType="Self.ORGANIZATION" />
+          <EntitySet Name="PROJECT" EntityType="Self.PROJECT" />
+          <AssociationSet Name="FK__CONTRACT__Contra__45F365D3" Association="Self.FK__CONTRACT__Contra__45F365D3">
+            <End Role="ORGANIZATION" EntitySet="ORGANIZATION" />
+            <End Role="CONTRACT" EntitySet="CONTRACT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECT_CONTRACT" Association="Self.FK_PROJECT_CONTRACT">
+            <End Role="CONTRACT" EntitySet="CONTRACT" />
+            <End Role="PROJECT" EntitySet="PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DEPARTAMENT_EMPLOYEE" Association="Self.FK_DEPARTAMENT_EMPLOYEE">
+            <End Role="EMPLOYEE" EntitySet="EMPLOYEE" />
+            <End Role="DEPARTAMENT" EntitySet="DEPARTAMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EMPLOYEE_DEPARTAMENT" Association="Self.FK_EMPLOYEE_DEPARTAMENT">
+            <End Role="DEPARTAMENT" EntitySet="DEPARTAMENT" />
+            <End Role="EMPLOYEE" EntitySet="EMPLOYEE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECT_DEPARTAMENT" Association="Self.FK_PROJECT_DEPARTAMENT">
+            <End Role="DEPARTAMENT" EntitySet="DEPARTAMENT" />
+            <End Role="PROJECT" EntitySet="PROJECT" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ProjectOrganizationModelContainer" CdmEntityContainer="ProjectOrganizationEntities">
+          <EntitySetMapping Name="CONTRACT">
+            <EntityTypeMapping TypeName="ProjectOrganizationModel.CONTRACT">
+              <MappingFragment StoreEntitySet="CONTRACT">
+                <ScalarProperty Name="Contract_ID" ColumnName="Contract_ID" />
+                <ScalarProperty Name="Organization_ID" ColumnName="Organization_ID" />
+                <ScalarProperty Name="Contract_Number" ColumnName="Contract_Number" />
+                <ScalarProperty Name="Contract_Date" ColumnName="Contract_Date" />
+                <ScalarProperty Name="Contract_Cost" ColumnName="Contract_Cost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DEPARTAMENT">
+            <EntityTypeMapping TypeName="ProjectOrganizationModel.DEPARTAMENT">
+              <MappingFragment StoreEntitySet="DEPARTAMENT">
+                <ScalarProperty Name="Departament_ID" ColumnName="Departament_ID" />
+                <ScalarProperty Name="Departament_Name" ColumnName="Departament_Name" />
+                <ScalarProperty Name="Floor" ColumnName="Floor" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Boss" ColumnName="Boss" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMPLOYEE">
+            <EntityTypeMapping TypeName="ProjectOrganizationModel.EMPLOYEE">
+              <MappingFragment StoreEntitySet="EMPLOYEE">
+                <ScalarProperty Name="Employee_ID" ColumnName="Employee_ID" />
+                <ScalarProperty Name="Departament_ID" ColumnName="Departament_ID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="Post" ColumnName="Post" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="House" ColumnName="House" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORGANIZATION">
+            <EntityTypeMapping TypeName="ProjectOrganizationModel.ORGANIZATION">
+              <MappingFragment StoreEntitySet="ORGANIZATION">
+                <ScalarProperty Name="Organization_ID" ColumnName="Organization_ID" />
+                <ScalarProperty Name="Organization_Name" ColumnName="Organization_Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="House" ColumnName="House" />
+                <ScalarProperty Name="Firstname_Director" ColumnName="Firstname_Director" />
+                <ScalarProperty Name="Lastname_Director" ColumnName="Lastname_Director" />
+                <ScalarProperty Name="Patronymic_Director" ColumnName="Patronymic_Director" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PROJECT">
+            <EntityTypeMapping TypeName="ProjectOrganizationModel.PROJECT">
+              <MappingFragment StoreEntitySet="PROJECT">
+                <ScalarProperty Name="Project_ID" ColumnName="Project_ID" />
+                <ScalarProperty Name="Contract_ID" ColumnName="Contract_ID" />
+                <ScalarProperty Name="Departament_ID" ColumnName="Departament_ID" />
+                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+                <ScalarProperty Name="Start_Date" ColumnName="Start_Date" />
+                <ScalarProperty Name="End_Date" ColumnName="End_Date" />
+                <ScalarProperty Name="ProjectCost" ColumnName="ProjectCost" />
+                <ScalarProperty Name="ProjectPhoto" ColumnName="ProjectPhoto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
